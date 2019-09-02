@@ -1,0 +1,27 @@
+.timerContainer {
+  height: 700px;
+  width: vw;
+  background-color: beige;
+}
+
+.timeDisplay {
+  height: 250px;
+  background-color: blue;
+}
+
+.btn {
+  height: 50px;
+  width: 50px;
+}
+
+.startTimer {
+  background-color: green;
+}
+
+.stopTimer {
+  background-color: red;
+}
+
+.resetTimer {
+  background-color: brown;
+}
