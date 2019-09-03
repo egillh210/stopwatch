@@ -142,7 +142,7 @@ function showLaps ({ laps }) {
     const { id, lapTime } = obj;
     console.log(lapTime);
     let newLapNode = document.createElement('li');
-    const newLap = document.createTextNode(`Lap ${id} : ${getTimeAsAString(lapTime)}`);
+    const newLap = document.createTextNode(`Lap ${id} ${getTimeAsAString(lapTime)}`);
     newLapNode.append(newLap);
    //const newLapNode = `Lap ${id} : ${getTimeAsAString(lapTime)}`;
     return newLapNode;
