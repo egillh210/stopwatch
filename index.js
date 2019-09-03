@@ -34,9 +34,6 @@ const resetTimer = () => ({
 
 const lapTimer = () => ({
   type: LAP,
-  // payload: {
-  //   time
-  // }
 })
 
 // INITIAL STATE
@@ -109,18 +106,8 @@ const timer = (state = initialState, action) => {
   }
 }
 
-function showTime ({ currentTime: time } = 0) {
-  let hours = Math.floor(time % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
-  let minutes = Math.floor(time % (1000 * 60 * 60) / (1000 * 60));
-  let seconds = Math.floor(time % (1000 * 60) / (1000));
-  let milliseconds = Math.floor(time % (1000) / 10);
-
-  hours = (hours < 10) ? '0' + hours : hours;
-  minutes = (minutes < 10) ? '0' + minutes : minutes;
-  seconds = (seconds < 10) ? '0' + seconds : seconds;
-  milliseconds = (milliseconds < 10) ? '0' + milliseconds : milliseconds;
-
-  timeDisplay.innerHTML = `${hours} : ${minutes} : ${seconds} : ${milliseconds}`;
+function showTime ({ currentTime: time = 0 }) {
+  timeDisplay.innerHTML = getTimeAsAString(time);
 }
 
 function getTimeAsAString (time) {
@@ -171,6 +158,7 @@ document.addEventListener('click', function (event) {
   if(event.target.matches('.startTimer')) {
     let time = Date.now();
     state = timer(state, startTimer(time))
+    showTime(state);
     console.log(state);
   }
   if(event.target.matches('.stopTimer')) {
@@ -185,7 +173,7 @@ document.addEventListener('click', function (event) {
   }
   if(event.target.matches('.lap')) {
     state = timer(state, lapTimer());
-    //showLaps(state);
+    showLaps(state);
     console.log(state);
   }
 });
