@@ -25,3 +25,13 @@
 .resetTimer {
   background-color: brown;
 }
+
+.lap {
+  background-color: aqua;
+}
+
+.lapsContainer {
+  background-color: white;
+  height: 200px;
+  
+}
