@@ -62,10 +62,10 @@ const timer = (state = initialState, action) => {
   switch (action.type) {
     case START_TIMER: {
       let { time } = action.payload;
-      
+      let { currentTime } = state
       return ({
         ...state,
-        startTime: time,
+        startTime: time - currentTime,
       })
     }
     case STOP_TIMER: {
