@@ -142,6 +142,12 @@ function showLaps ({ laps }) {
   })
 }
 
+function getTime(timeStamp) {
+  const { startTime, currentTime } = state;
+  const currTime = startTime ? (timeStamp - startTime) : currentTime;
+  return getTimeAsAString(currTime);
+}
+
 var btn = document.querySelectorAll('button');
 var hours, minutes, seconds, time, state, tInterval;
 var timeDisplay = document.querySelector('.timeDisplay');
@@ -177,3 +183,7 @@ document.addEventListener('click', function (event) {
     console.log(state);
   }
 });
+
+document.window.addEventListener('loadend', function (e) {
+  console.log('worked!');
+})
