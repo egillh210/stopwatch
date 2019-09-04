@@ -134,6 +134,7 @@ function showLaps ({ laps }) {
     newLapNode.append(newLap);
     return newLapNode;
   })
+  console.log(arrLapsStr);
   arrLapsStr = arrLapsStr.reverse();
   var container = document.querySelector('.lapsContainer');
   container.innerHTML = '';
@@ -142,22 +143,29 @@ function showLaps ({ laps }) {
   })
 }
 
+function lapsShow ({ laps }) {
+  let arrLapsStr = laps.map(obj => {
+
+  })
+}
+
 function updateCurrentLap (id, time) { }
 
 function getTime() {
   const timeStamp = Date.now();
-  const { startTime, currentTime, previousLapTime } = state;
+  const { startTime, currentTime, previousLapTime, laps } = state;
   const currTime = startTime ? (timeStamp - startTime) : currentTime;
   const currLapTime = currTime - previousLapTime;
   timeDisplay.innerHTML = getTimeAsAString(currTime);
-  currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`
-  
+  currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`;
+  console.log('here');
 }
 
 var btn = document.querySelectorAll('button');
 var hours, minutes, seconds, time, state, tInterval;
 var timeDisplay = document.querySelector('.timeDisplay');
-var currentLapDisplay = document.querySelector('.lapsContainer');
+var lapDisplay = document.querySelector('.lapsContainer');
+var currentLapDisplay = document.querySelector('.currentLapContainer');
 
 document.querySelector('.timerContainer').addEventListener('click', e => {
   let time = Date.now();
@@ -177,12 +185,12 @@ document.addEventListener('click', function (event) {
   if(event.target.matches('.stopTimer')) {
     let time = Date.now();
     state = timer(state, stopTimer(time))
+    clearInterval(tInterval);
     console.log(state);
   }
   if(event.target.matches('.resetTimer')) {
-    let time = Date.now();
     state = timer(state, resetTimer());
-    //console.log(state);
+    console.log(state);
   }
   if(event.target.matches('.lap')) {
     state = timer(state, lapTimer());

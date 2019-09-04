@@ -9,7 +9,7 @@ body {
 }
 
 .timeDisplay {
-  height: 250px;
+  height: 100px;
 }
 
 .btn {
@@ -72,5 +72,17 @@ width:100%
   padding: 0;
 }
 .lapsContainer li {
+  border-top: solid 0.3px rgba(166, 166, 166, 0.6);
+}
+
+.currentLapContainer {
+  color: white;
+  list-style:none;
+  text-align: center;
+  padding: 0;
+  padding: 0;
+}
+
+.currentLapContainer li {
   border-top: solid 0.3px rgba(166, 166, 166, 0.6);
 }
