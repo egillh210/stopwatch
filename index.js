@@ -5,6 +5,40 @@ const RESET_TIMER = 'RESET_TIMER';
 const LAP = 'LAP';
 const GET_CURRENT_TIME = 'GET_CURRENT_TIME';
 
+// INITIAL STATE
+const initialState = {
+  startTime: 0,
+  currentTime: 0,
+
+  running: false,
+
+  currentLapTime: 0,
+  previousLapTime: 0,
+
+  slowestLapTimeId: null,
+  fastestLapTimeId: null,
+
+  slowestLapTime: 0,
+  fastestLapTime: Infinity,
+
+  laps: [],
+}
+
+// DECLARE STATE AND ASSIGN IT TO THE VALUE OF THE INITIAL STATE
+let state = initialState, tInterval;
+
+// Declare constants for buttons and assign them a reference to their
+// respective properties of the document object.
+const startBtn = document.querySelector('.startTimer');
+const stopBtn = document.querySelector('.stopTimer');
+const resetBtn = document.querySelector('.resetTimer');
+const lapBtn = document.querySelector('.lap');
+
+// Declare and assign re-assignable variables for elements to be rendered.
+let timeDisplay = document.querySelector('.timeDisplay');
+let lapDisplay = document.querySelector('.lapsContainer');
+let currentLapDisplay = document.querySelector('.currentLapContainer');
+
 // ACTIONS
 const startTimer = (time) => ({
   type: START_TIMER,
@@ -35,26 +69,9 @@ const lapTimer = () => ({
   type: LAP,
 })
 
-// INITIAL STATE
-let initialState = {
-  startTime: 0,
-  currentTime: 0,
-
-  running: false,
-
-  currentLapTime: 0,
-  previousLapTime: 0,
-
-  slowestLapTimeId: null,
-  fastestLapTimeId: null,
-
-  slowestLapTime: 0,
-  fastestLapTime: Infinity,
-
-  laps: [],
-}
 
 // REDUCER
+// 
 let nextId = 1;
 const timer = (state = initialState, action) => {
   switch (action.type) {
@@ -121,10 +138,6 @@ const timer = (state = initialState, action) => {
   }
 }
 
-// function showTime ({ currentTime: time = 0 }) {
-//   timeDisplay.innerHTML = getTimeAsAString(time);
-// }
-
 function getTimeAsAString (time) {
   let hours = Math.floor(time % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
   let minutes = Math.floor(time % (1000 * 60 * 60) / (1000 * 60));
@@ -175,10 +188,10 @@ function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
   })
 }
 
-function renderState (state) {
+function renderState (state = state) {
   const { laps, currentTime, running } = state;
 
-  if(laps.length > 1) showLaps(state)
+  if(laps.length > 0) showLaps(state)
   else lapDisplay.innerHTML = '';
 
   if (currentTime === 0) {
@@ -231,18 +244,6 @@ var toggle = function (elem) {
   show(elem);
 
 }
-
-var btn = document.querySelectorAll('button');
-var hours, minutes, seconds, time, state, tInterval;
-
-var startBtn = document.querySelector('.startTimer');
-var stopBtn = document.querySelector('.stopTimer');
-var resetBtn = document.querySelector('.resetTimer');
-var lapBtn = document.querySelector('.lap');
-
-var timeDisplay = document.querySelector('.timeDisplay');
-var lapDisplay = document.querySelector('.lapsContainer');
-var currentLapDisplay = document.querySelector('.currentLapContainer');
 
 document.querySelector('.timerContainer').addEventListener('click', e => {
   let time = Date.now();
