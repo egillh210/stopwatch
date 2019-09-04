@@ -153,7 +153,6 @@ function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
     const newLapTime = document.createElement('h2');
     newLapTime.className = "lapStopTime"
     newLapTime.appendChild(document.createTextNode(`${getTimeAsAString(lapTime)}`));
-    const newLap = document.createTextNode(`Lap ${id} ${getTimeAsAString(lapTime)}`);
 
     if(id === slowestLapTimeId && laps.length > 1) {
       newLapNode.style.color = 'red';
