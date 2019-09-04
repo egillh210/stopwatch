@@ -49,8 +49,8 @@ let initialState = {
   slowestLapTimeId: null,
   fastestLapTimeId: null,
 
-  slowestLapTime: null,
-  fastestLapTime: null,
+  slowestLapTime: 0,
+  fastestLapTime: Infinity,
 
   laps: [],
 }
@@ -93,16 +93,28 @@ const timer = (state = initialState, action) => {
       })
     }
     case LAP: {
-      const { currentLapTime: tes, laps, previousLapTime: tas } = state;
+      const {
+        currentLapTime, 
+        laps, 
+        previousLapTime, 
+        slowestLapTime, 
+        fastestLapTime,
+        slowestLapTimeId,
+        fastestLapTimeId,
+      } = state;
       let newLap = {
         id: nextId,
-        lapTime: tes,
+        lapTime: currentLapTime,
       };
       nextId++;
       return ({
         ...state,
-        previousLapTime: tes + tas,
+        previousLapTime: currentLapTime + previousLapTime,
         laps: [...laps].concat(newLap),
+        slowestLapTimeId: currentLapTime > slowestLapTime ? newLap.id : slowestLapTimeId,
+        fastestLapTimeId: currentLapTime < fastestLapTime ? newLap.id : fastestLapTimeId,
+        fastestLapTime: currentLapTime < fastestLapTime ? currentLapTime : fastestLapTime,
+        slowestLapTime: currentLapTime > slowestLapTime ? currentLapTime : slowestLapTime,
       })
     }
     default:
@@ -130,16 +142,25 @@ function getTimeAsAString (time) {
   return `${Number(hours) < 1 ? '' : hours + ' :'} ${minutes} : ${seconds} : ${milliseconds}`;
 }
 
-function showLaps ({ laps }) {
+function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
   let arrLapsStr = laps.map(obj => {
     const { id, lapTime } = obj;
     let newLapNode = document.createElement('li');
     const newLap = document.createTextNode(`Lap ${id} ${getTimeAsAString(lapTime)}`);
+
+    if(id === slowestLapTimeId && laps.length > 1) {
+      newLapNode.style.color = 'red';
+    }
+
+    if(id === fastestLapTimeId && laps.length > 1) {
+      newLapNode.style.color = 'green';
+    }
+
     newLapNode.append(newLap);
     return newLapNode;
   })
-  console.log(arrLapsStr);
   arrLapsStr = arrLapsStr.reverse();
+  console.log(arrLapsStr);
   var container = document.querySelector('.lapsContainer');
   container.innerHTML = '';
   arrLapsStr.forEach(t => {
