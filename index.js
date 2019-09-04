@@ -146,7 +146,6 @@ function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
   let arrLapsStr = laps.map(obj => {
     const { id, lapTime } = obj;
     let newLapNode = document.createElement('li');
-<<<<<<< HEAD
     // const newLap = document.createTextNode(`Lap ${id}`);
     const newLap = document.createElement('h2');
     newLap.className = "lapNo";
@@ -154,7 +153,6 @@ function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
     const newLapTime = document.createElement('h2');
     newLapTime.className = "lapStopTime"
     newLapTime.appendChild(document.createTextNode(`${getTimeAsAString(lapTime)}`));
-=======
     const newLap = document.createTextNode(`Lap ${id} ${getTimeAsAString(lapTime)}`);
 
     if(id === slowestLapTimeId && laps.length > 1) {
@@ -165,7 +163,6 @@ function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
       newLapNode.style.color = 'green';
     }
 
->>>>>>> origin/heima
     newLapNode.append(newLap);
     newLapNode.append(newLapTime);
    //const newLapNode = `Lap ${id} : ${getTimeAsAString(lapTime)}`;
