@@ -41,14 +41,16 @@ let initialState = {
   startTime: 0,
   currentTime: 0,
 
+  running: false,
+
   currentLapTime: 0,
   previousLapTime: 0,
 
   slowestLapTimeId: null,
   fastestLapTimeId: null,
 
-  slowestLapTime: null,
-  fastestLapTime: null,
+  slowestLapTime: 0,
+  fastestLapTime: Infinity,
 
   laps: [],
 }
@@ -63,12 +65,14 @@ const timer = (state = initialState, action) => {
       return ({
         ...state,
         startTime: time - currentTime,
+        running: true,
       })
     }
     case STOP_TIMER: {
       return ({
         ...state,
         startTime: 0,
+        running: false,
       })
     }
     case RESET_TIMER: {
@@ -89,16 +93,28 @@ const timer = (state = initialState, action) => {
       })
     }
     case LAP: {
-      const { currentLapTime: tes, laps, previousLapTime: tas } = state;
+      const {
+        currentLapTime, 
+        laps, 
+        previousLapTime, 
+        slowestLapTime, 
+        fastestLapTime,
+        slowestLapTimeId,
+        fastestLapTimeId,
+      } = state;
       let newLap = {
         id: nextId,
-        lapTime: tes,
+        lapTime: currentLapTime,
       };
       nextId++;
       return ({
         ...state,
-        previousLapTime: tes + tas,
+        previousLapTime: currentLapTime + previousLapTime,
         laps: [...laps].concat(newLap),
+        slowestLapTimeId: currentLapTime > slowestLapTime ? newLap.id : slowestLapTimeId,
+        fastestLapTimeId: currentLapTime < fastestLapTime ? newLap.id : fastestLapTimeId,
+        fastestLapTime: currentLapTime < fastestLapTime ? currentLapTime : fastestLapTime,
+        slowestLapTime: currentLapTime > slowestLapTime ? currentLapTime : slowestLapTime,
       })
     }
     default:
@@ -126,10 +142,11 @@ function getTimeAsAString (time) {
   return `${Number(hours) < 1 ? '' : hours + ' :'} ${minutes} : ${seconds} : ${milliseconds}`;
 }
 
-function showLaps ({ laps }) {
+function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
   let arrLapsStr = laps.map(obj => {
     const { id, lapTime } = obj;
     let newLapNode = document.createElement('li');
+<<<<<<< HEAD
     // const newLap = document.createTextNode(`Lap ${id}`);
     const newLap = document.createElement('h2');
     newLap.className = "lapNo";
@@ -137,12 +154,25 @@ function showLaps ({ laps }) {
     const newLapTime = document.createElement('h2');
     newLapTime.className = "lapStopTime"
     newLapTime.appendChild(document.createTextNode(`${getTimeAsAString(lapTime)}`));
+=======
+    const newLap = document.createTextNode(`Lap ${id} ${getTimeAsAString(lapTime)}`);
+
+    if(id === slowestLapTimeId && laps.length > 1) {
+      newLapNode.style.color = 'red';
+    }
+
+    if(id === fastestLapTimeId && laps.length > 1) {
+      newLapNode.style.color = 'green';
+    }
+
+>>>>>>> origin/heima
     newLapNode.append(newLap);
     newLapNode.append(newLapTime);
    //const newLapNode = `Lap ${id} : ${getTimeAsAString(lapTime)}`;
     return newLapNode;
   })
   arrLapsStr = arrLapsStr.reverse();
+  console.log(arrLapsStr);
   var container = document.querySelector('.lapsContainer');
   container.innerHTML = '';
   arrLapsStr.forEach(t => {
@@ -150,15 +180,74 @@ function showLaps ({ laps }) {
   })
 }
 
-function getTime(timeStamp) {
-  const { startTime, currentTime } = state;
+function renderState (state) {
+  const { laps, currentTime, running } = state;
+
+  if(laps.length > 1) showLaps(state)
+  else lapDisplay.innerHTML = '';
+
+  if (currentTime === 0) {
+    currentLapDisplay.innerHTML = '';
+    timeDisplay.innerHTML = '00 : 00 : 00';
+    nextId = 1;
+  }
+
+  if (running) {
+    hide(startBtn);
+    hide(resetBtn);
+    show(stopBtn);
+    show(lapBtn);
+  }
+
+  if (!running) {
+    show(startBtn);
+    show(resetBtn);
+    hide(stopBtn);
+    hide(lapBtn);
+  }
+
+}
+
+function getTime() {
+  const timeStamp = Date.now();
+  const { startTime, currentTime, previousLapTime, laps } = state;
   const currTime = startTime ? (timeStamp - startTime) : currentTime;
-  return getTimeAsAString(currTime);
+  const currLapTime = currTime - previousLapTime;
+  timeDisplay.innerHTML = getTimeAsAString(currTime);
+  currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`;
+  console.log('here');
+}
+
+var show = function (elem) {
+  elem.style.display = 'block';
+}
+
+var hide = function (elem) {
+  elem.style.display = 'none';
+}
+
+var toggle = function (elem) {
+
+  if(window.getComputedStyle(elem).display === 'block') {
+    hide(elem);
+    return
+  }
+
+  show(elem);
+
 }
 
 var btn = document.querySelectorAll('button');
 var hours, minutes, seconds, time, state, tInterval;
+
+var startBtn = document.querySelector('.startTimer');
+var stopBtn = document.querySelector('.stopTimer');
+var resetBtn = document.querySelector('.resetTimer');
+var lapBtn = document.querySelector('.lap');
+
 var timeDisplay = document.querySelector('.timeDisplay');
+var lapDisplay = document.querySelector('.lapsContainer');
+var currentLapDisplay = document.querySelector('.currentLapContainer');
 
 document.querySelector('.timerContainer').addEventListener('click', e => {
   let time = Date.now();
@@ -172,18 +261,21 @@ document.addEventListener('click', function (event) {
   if(event.target.matches('.startTimer')) {
     let time = Date.now();
     state = timer(state, startTimer(time))
-    showTime(state);
+    renderState(state);
+    tInterval = setInterval(getTime, 10);
     console.log(state);
   }
   if(event.target.matches('.stopTimer')) {
     let time = Date.now();
+    clearInterval(tInterval);
     state = timer(state, stopTimer(time))
+    renderState(state);
     console.log(state);
   }
   if(event.target.matches('.resetTimer')) {
-    let time = Date.now();
     state = timer(state, resetTimer());
-    //console.log(state);
+    renderState(state);
+    console.log(state);
   }
   if(event.target.matches('.lap')) {
     state = timer(state, lapTimer());
@@ -192,6 +284,3 @@ document.addEventListener('click', function (event) {
   }
 });
 
-document.window.addEventListener('loadend', function (e) {
-  console.log('worked!');
-})

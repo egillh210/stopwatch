@@ -9,7 +9,7 @@ body {
 }
 
 .timeDisplay {
-  height: 250px;
+  height: 100px;
 }
 
 .btn {
@@ -81,6 +81,7 @@ h2{
   border-top: solid 0.3px rgba(166, 166, 166, 0.6);
 }
 
+<<<<<<< HEAD
 .lapNo{
 float: left;
 display: flex;
@@ -90,4 +91,16 @@ margin-left: 10px;
 float: right;
 display: flex;
 margin-right: 10px;
+=======
+.currentLapContainer {
+  color: white;
+  list-style:none;
+  text-align: center;
+  padding: 0;
+  padding: 0;
+}
+
+.currentLapContainer li {
+  border-top: solid 0.3px rgba(166, 166, 166, 0.6);
+>>>>>>> origin/heima
 }
