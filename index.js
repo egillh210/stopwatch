@@ -255,9 +255,9 @@ document.addEventListener('click', function (event) {
   }
   if(event.target.matches('.stopTimer')) {
     let time = Date.now();
+    clearInterval(tInterval);
     state = timer(state, stopTimer(time))
     renderState(state);
-    clearInterval(tInterval);
     console.log(state);
   }
   if(event.target.matches('.resetTimer')) {
