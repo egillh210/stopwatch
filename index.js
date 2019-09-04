@@ -34,9 +34,6 @@ const resetTimer = () => ({
 
 const lapTimer = () => ({
   type: LAP,
-  // payload: {
-  //   time
-  // }
 })
 
 // INITIAL STATE
@@ -44,14 +41,16 @@ let initialState = {
   startTime: 0,
   currentTime: 0,
 
+  running: false,
+
   currentLapTime: 0,
   previousLapTime: 0,
 
   slowestLapTimeId: null,
   fastestLapTimeId: null,
 
-  slowestLapTime: null,
-  fastestLapTime: null,
+  slowestLapTime: 0,
+  fastestLapTime: Infinity,
 
   laps: [],
 }
@@ -62,16 +61,18 @@ const timer = (state = initialState, action) => {
   switch (action.type) {
     case START_TIMER: {
       let { time } = action.payload;
-      
+      let { currentTime } = state
       return ({
         ...state,
-        startTime: time,
+        startTime: time - currentTime,
+        running: true,
       })
     }
     case STOP_TIMER: {
       return ({
         ...state,
         startTime: 0,
+        running: false,
       })
     }
     case RESET_TIMER: {
@@ -92,16 +93,28 @@ const timer = (state = initialState, action) => {
       })
     }
     case LAP: {
-      const { currentLapTime: tes, laps, previousLapTime: tas } = state;
+      const {
+        currentLapTime, 
+        laps, 
+        previousLapTime, 
+        slowestLapTime, 
+        fastestLapTime,
+        slowestLapTimeId,
+        fastestLapTimeId,
+      } = state;
       let newLap = {
         id: nextId,
-        lapTime: tes,
+        lapTime: currentLapTime,
       };
       nextId++;
       return ({
         ...state,
-        previousLapTime: tes + tas,
+        previousLapTime: currentLapTime + previousLapTime,
         laps: [...laps].concat(newLap),
+        slowestLapTimeId: currentLapTime > slowestLapTime ? newLap.id : slowestLapTimeId,
+        fastestLapTimeId: currentLapTime < fastestLapTime ? newLap.id : fastestLapTimeId,
+        fastestLapTime: currentLapTime < fastestLapTime ? currentLapTime : fastestLapTime,
+        slowestLapTime: currentLapTime > slowestLapTime ? currentLapTime : slowestLapTime,
       })
     }
     default:
@@ -109,18 +122,8 @@ const timer = (state = initialState, action) => {
   }
 }
 
-function showTime ({ currentTime: time } = 0) {
-  let hours = Math.floor(time % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
-  let minutes = Math.floor(time % (1000 * 60 * 60) / (1000 * 60));
-  let seconds = Math.floor(time % (1000 * 60) / (1000));
-  let milliseconds = Math.floor(time % (1000) / 10);
-
-  hours = (hours < 10) ? '0' + hours : hours;
-  minutes = (minutes < 10) ? '0' + minutes : minutes;
-  seconds = (seconds < 10) ? '0' + seconds : seconds;
-  milliseconds = (milliseconds < 10) ? '0' + milliseconds : milliseconds;
-
-  timeDisplay.innerHTML = `${hours} : ${minutes} : ${seconds} : ${milliseconds}`;
+function showTime ({ currentTime: time = 0 }) {
+  timeDisplay.innerHTML = getTimeAsAString(time);
 }
 
 function getTimeAsAString (time) {
@@ -139,15 +142,33 @@ function getTimeAsAString (time) {
   return `${Number(hours) < 1 ? '' : hours + ' :'} ${minutes} : ${seconds} : ${milliseconds}`;
 }
 
-function showLaps ({ laps }) {
+function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
   let arrLapsStr = laps.map(obj => {
     const { id, lapTime } = obj;
     let newLapNode = document.createElement('li');
-    const newLap = document.createTextNode(`Lap ${id} ${getTimeAsAString(lapTime)}`);
+    // const newLap = document.createTextNode(`Lap ${id}`);
+    const newLap = document.createElement('h2');
+    newLap.className = "lapNo";
+    newLap.appendChild(document.createTextNode(`Lap ${id}`));
+    const newLapTime = document.createElement('h2');
+    newLapTime.className = "lapStopTime"
+    newLapTime.appendChild(document.createTextNode(`${getTimeAsAString(lapTime)}`));
+
+    if(id === slowestLapTimeId && laps.length > 1) {
+      newLapNode.style.color = 'red';
+    }
+
+    if(id === fastestLapTimeId && laps.length > 1) {
+      newLapNode.style.color = 'green';
+    }
+
     newLapNode.append(newLap);
+    newLapNode.append(newLapTime);
+   //const newLapNode = `Lap ${id} : ${getTimeAsAString(lapTime)}`;
     return newLapNode;
   })
   arrLapsStr = arrLapsStr.reverse();
+  console.log(arrLapsStr);
   var container = document.querySelector('.lapsContainer');
   container.innerHTML = '';
   arrLapsStr.forEach(t => {
@@ -155,15 +176,80 @@ function showLaps ({ laps }) {
   })
 }
 
+function renderState (state) {
+  const { laps, currentTime, running } = state;
+
+  if(laps.length > 1) showLaps(state)
+  else lapDisplay.innerHTML = '';
+
+  if (currentTime === 0) {
+    currentLapDisplay.innerHTML = '';
+    timeDisplay.innerHTML = '00 : 00 : 00';
+    nextId = 1;
+  }
+
+  if (running) {
+    hide(startBtn);
+    hide(resetBtn);
+    show(stopBtn);
+    show(lapBtn);
+  }
+
+  if (!running) {
+    show(startBtn);
+    show(resetBtn);
+    hide(stopBtn);
+    hide(lapBtn);
+  }
+
+}
+
+function getTime() {
+  const timeStamp = Date.now();
+  const { startTime, currentTime, previousLapTime, laps } = state;
+  const currTime = startTime ? (timeStamp - startTime) : currentTime;
+  const currLapTime = currTime - previousLapTime;
+  timeDisplay.innerHTML = getTimeAsAString(currTime);
+  currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`;
+  console.log('here');
+}
+
+var show = function (elem) {
+  elem.style.display = 'block';
+}
+
+var hide = function (elem) {
+  elem.style.display = 'none';
+}
+
+var toggle = function (elem) {
+
+  if(window.getComputedStyle(elem).display === 'block') {
+    hide(elem);
+    return
+  }
+
+  show(elem);
+
+}
+
 var btn = document.querySelectorAll('button');
 var hours, minutes, seconds, time, state, tInterval;
+
+var startBtn = document.querySelector('.startTimer');
+var stopBtn = document.querySelector('.stopTimer');
+var resetBtn = document.querySelector('.resetTimer');
+var lapBtn = document.querySelector('.lap');
+
 var timeDisplay = document.querySelector('.timeDisplay');
+var lapDisplay = document.querySelector('.lapsContainer');
+var currentLapDisplay = document.querySelector('.currentLapContainer');
 
 document.querySelector('.timerContainer').addEventListener('click', e => {
   let time = Date.now();
   state = timer(state, getCurrentTime(time));
   console.log('here', state);
-}, true);
+},true);
 
 document.addEventListener('click', function (event) {
   event.preventDefault();
@@ -171,21 +257,26 @@ document.addEventListener('click', function (event) {
   if(event.target.matches('.startTimer')) {
     let time = Date.now();
     state = timer(state, startTimer(time))
+    renderState(state);
+    tInterval = setInterval(getTime, 10);
     console.log(state);
   }
   if(event.target.matches('.stopTimer')) {
     let time = Date.now();
+    clearInterval(tInterval);
     state = timer(state, stopTimer(time))
+    renderState(state);
     console.log(state);
   }
   if(event.target.matches('.resetTimer')) {
-    let time = Date.now();
     state = timer(state, resetTimer());
-    //console.log(state);
+    renderState(state);
+    console.log(state);
   }
   if(event.target.matches('.lap')) {
     state = timer(state, lapTimer());
-    //showLaps(state);
+    showLaps(state);
     console.log(state);
   }
 });
+
