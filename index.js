@@ -143,13 +143,17 @@ function showLaps ({ laps }) {
   })
 }
 
-function lapsShow ({ laps }) {
-  let arrLapsStr = laps.map(obj => {
+function renderState (state) {
+  const { laps, currentTime } = state;
 
-  })
+  if(laps.length > 1) showLaps(state)
+  else lapDisplay.innerHTML = '';
+
+  if (currentTime === 0) {
+    currentLapDisplay.innerHTML = '';
+    timeDisplay.innerHTML = '00 : 00 : 00';
+  }
 }
-
-function updateCurrentLap (id, time) { }
 
 function getTime() {
   const timeStamp = Date.now();
@@ -190,6 +194,7 @@ document.addEventListener('click', function (event) {
   }
   if(event.target.matches('.resetTimer')) {
     state = timer(state, resetTimer());
+    renderState(state);
     console.log(state);
   }
   if(event.target.matches('.lap')) {
