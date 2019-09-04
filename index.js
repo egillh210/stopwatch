@@ -142,8 +142,15 @@ function showLaps ({ laps }) {
     const { id, lapTime } = obj;
     console.log(lapTime);
     let newLapNode = document.createElement('li');
-    const newLap = document.createTextNode(`Lap ${id} ${getTimeAsAString(lapTime)}`);
+    // const newLap = document.createTextNode(`Lap ${id}`);
+    const newLap = document.createElement('h2');
+    newLap.className = "lapNo";
+    newLap.appendChild(document.createTextNode(`Lap ${id}`));
+    const newLapTime = document.createElement('h2');
+    newLapTime.className = "lapStopTime"
+    newLapTime.appendChild(document.createTextNode(`${getTimeAsAString(lapTime)}`));
     newLapNode.append(newLap);
+    newLapNode.append(newLapTime);
    //const newLapNode = `Lap ${id} : ${getTimeAsAString(lapTime)}`;
     return newLapNode;
   })
@@ -164,7 +171,7 @@ var timeDisplay = document.querySelector('.timeDisplay');
 document.querySelector('.timerContainer').addEventListener('click', e => {
   let time = Date.now();
   state = timer(state, getCurrentTime(time));
-  //console.log('here', state);
+  console.log('here', state);
 },true);
 
 document.addEventListener('click', function (event) {
