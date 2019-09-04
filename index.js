@@ -142,15 +142,22 @@ function showLaps ({ laps }) {
   })
 }
 
-function getTime(timeStamp) {
-  const { startTime, currentTime } = state;
+function updateCurrentLap (id, time) { }
+
+function getTime() {
+  const timeStamp = Date.now();
+  const { startTime, currentTime, previousLapTime } = state;
   const currTime = startTime ? (timeStamp - startTime) : currentTime;
-  return getTimeAsAString(currTime);
+  const currLapTime = currTime - previousLapTime;
+  timeDisplay.innerHTML = getTimeAsAString(currTime);
+  currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`
+  
 }
 
 var btn = document.querySelectorAll('button');
 var hours, minutes, seconds, time, state, tInterval;
 var timeDisplay = document.querySelector('.timeDisplay');
+var currentLapDisplay = document.querySelector('.lapsContainer');
 
 document.querySelector('.timerContainer').addEventListener('click', e => {
   let time = Date.now();
@@ -164,7 +171,7 @@ document.addEventListener('click', function (event) {
   if(event.target.matches('.startTimer')) {
     let time = Date.now();
     state = timer(state, startTimer(time))
-    showTime(state);
+    tInterval = setInterval(getTime, 10);
     console.log(state);
   }
   if(event.target.matches('.stopTimer')) {
@@ -184,6 +191,3 @@ document.addEventListener('click', function (event) {
   }
 });
 
-document.window.addEventListener('loadend', function (e) {
-  console.log('worked!');
-})
