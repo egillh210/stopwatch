@@ -2,13 +2,26 @@
   "name": "stopwatch",
   "version": "1.0.0",
   "description": "''",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "webpack --watch",
+    "start": "webpack-dev-server --open"
   },
   "keywords": [
     "[]"
   ],
   "author": "emh",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^3.2.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/egillh210/stopwatch.git"
+  }
 }
