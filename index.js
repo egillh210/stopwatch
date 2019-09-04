@@ -1,4 +1,3 @@
-
 // ACTION TYPES
 const START_TIMER = 'START_TIMER';
 const STOP_TIMER = 'STOP_TIMER';
@@ -122,9 +121,9 @@ const timer = (state = initialState, action) => {
   }
 }
 
-function showTime ({ currentTime: time = 0 }) {
-  timeDisplay.innerHTML = getTimeAsAString(time);
-}
+// function showTime ({ currentTime: time = 0 }) {
+//   timeDisplay.innerHTML = getTimeAsAString(time);
+// }
 
 function getTimeAsAString (time) {
   let hours = Math.floor(time % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
