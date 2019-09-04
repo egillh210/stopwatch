@@ -86,10 +86,12 @@ float: left;
 display: flex;
 margin-left: 10px;
 }
-.lapStopTime{
+.lapStopTime {
 float: right;
 display: flex;
 margin-right: 10px;
+}
+
 .currentLapContainer {
   color: white;
   list-style:none;
