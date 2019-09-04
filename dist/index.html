@@ -5,16 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>StopWatch</title>
-  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <div class="timerContainer">
     <div class="timeDisplay">00 : 00 : 00</div>
     <div id="buttons">
       <div class="btn startTimer">Start</div>
-      <div class="btn stopTimer">Stop</div>
+      <div style="display: none" class="btn stopTimer">Stop</div>
       <div class="btn resetTimer">Reset</div>
-      <div class="btn lap">Lap</div>
+      <div style="display: none" class="btn lap">Lap</div>
   </div>
   <div id="lapsDisplay">
     <ul class="currentLapContainer">
@@ -23,5 +22,5 @@
   </div>
   </div>
 </body>
-<script src="./index.js"></script>
+<script src="bundle.js"></script>
 </html>
