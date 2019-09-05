@@ -17,7 +17,7 @@ body {
 
 .timerContainer {
   color: white;
-  height: 700px;
+  height: 70vh;
   width: vw;
   font-family: 'timefont', Arial, Helvetica, sans-serif;
 }
@@ -25,6 +25,7 @@ body {
 .timeDisplay {
   height: 50vw;
   font-size: 22vw;
+  margin-top: 100px;
   text-align: center;
   font-style: 'bold';
   position: static;
@@ -124,12 +125,12 @@ li {
 .lapNo{
 float: left;
 display: flex;
-margin-left: 10px;
+margin-left: 4vw;
 }
 .lapStopTime {
 float: right;
 display: flex;
-margin-right: 10px;
+margin-right: 4vw;
 }
 
 .currentLapContainer li {
