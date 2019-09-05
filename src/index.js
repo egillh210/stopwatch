@@ -77,7 +77,7 @@ function renderState ({ laps, currentTime, running }) {
 
   if (currentTime === 0) {
     currentLapDisplay.innerHTML = '';
-    currentTimeDisplay.innerHTML = '00 : 00 : 00';
+    currentTimeDisplay.innerHTML = '00:00.00';
     hide(resetBtn);
     show(lapBtn);
   }

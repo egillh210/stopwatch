@@ -14,5 +14,5 @@ export const getTimeAsAString = (time) => {
 
   if (!time) return '00 : 00 : 00';
 
-  return `${Number(hours) < 1 ? '' : hours + ' :'} ${minutes} : ${seconds} : ${milliseconds}`;
+  return `${Number(hours) < 1 ? '' : hours + ':'} ${minutes}:${seconds}.${milliseconds}`;
 }
