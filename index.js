@@ -242,7 +242,7 @@ function getTime() {
 }
 
 var show = function (elem) {
-  elem.style.display = 'block';
+  elem.style.display = 'inline-flex';
 }
 
 var hide = function (elem) {
@@ -251,7 +251,7 @@ var hide = function (elem) {
 
 var toggle = function (elem) {
 
-  if(window.getComputedStyle(elem).display === 'block') {
+  if(window.getComputedStyle(elem).display === 'inline-flex') {
     hide(elem);
     return
   }
