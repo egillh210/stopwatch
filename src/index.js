@@ -87,7 +87,7 @@ function getTime() {
   const { startTime, currentTime, previousLapTime, nextId } = state;
   const currTime = startTime ? (timeStamp - startTime) : currentTime;
   const currLapTime = currTime - previousLapTime;
-  timeDisplay.innerHTML = getTimeAsAString(currTime);
+  currentTimeDisplay.innerHTML = getTimeAsAString(currTime);
   // currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`;
   // console.log('here');
   const listLapDisplay = document.createElement('li');
