@@ -64,7 +64,7 @@ width:100%
   margin-left: 20px;
 }
 
-.lapsContainer {
+.lapsContainer, .currentLapContainer {
   font-size: 20px;
   color: white;
   list-style:none;
@@ -90,12 +90,6 @@ margin-left: 10px;
 float: right;
 display: flex;
 margin-right: 10px;
-.currentLapContainer {
-  color: white;
-  list-style:none;
-  text-align: center;
-  padding: 0;
-  padding: 0;
 }
 
 .currentLapContainer li {
