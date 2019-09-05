@@ -1,11 +1,19 @@
+@font-face {
+  font-family: 'timefont';
+  src: url('./HelveticaNeue-UltraLight.otf') format('opentype');
+  font-weight: 600;
+  font-style: 'normal';
+}
+
 body {
   background-color: black;
-  font-family: helvetica;
 }
+
 .timerContainer {
   color: white;
   height: 700px;
   width: vw;
+  font-family: 'timefont', Arial, Helvetica, sans-serif;
 }
 
 .timeDisplay {
@@ -13,6 +21,7 @@ body {
   font-size: 17vw;
   margin-top: 25vw;
   text-align: center;
+  font-style: 'bold'
 }
 
 .btn {
