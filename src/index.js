@@ -67,22 +67,12 @@ function getTime() {
   const { startTime, currentTime, previousLapTime, nextId } = state;
   const currTime = startTime ? (timeStamp - startTime) : currentTime;
   const currLapTime = currTime - previousLapTime;
-  currentTimeDisplay.innerHTML = getTimeAsAString(currTime);
-  const listLapDisplay = document.createElement('li');
 
-  const showCurLap = document.createElement('h2');
-  showCurLap.className = "lapNo";
-  showCurLap.appendChild(document.createTextNode(`Lap ${nextId}`));
-
-  const showCurTime = document.createElement('h2');
-  showCurTime.className = "lapStopTime";
-  showCurTime.appendChild(document.createTextNode(`${getTimeAsAString(currLapTime)}`));
-
-  listLapDisplay.appendChild(showCurLap);
-  listLapDisplay.appendChild(showCurTime);
+  const currentLap = createLapNode(({ id: nextId, lapTime: currLapTime }))
 
   currentLapDisplay.innerHTML = '';
-  currentLapDisplay.appendChild(listLapDisplay);
+  currentLapDisplay.appendChild(currentLap);
+  currentTimeDisplay.innerHTML = getTimeAsAString(currTime);
 }
 
 var show = function (elem) {
