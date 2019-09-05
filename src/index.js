@@ -87,13 +87,28 @@ function getTime() {
   const { startTime, currentTime, previousLapTime, nextId } = state;
   const currTime = startTime ? (timeStamp - startTime) : currentTime;
   const currLapTime = currTime - previousLapTime;
-  currentTimeDisplay.innerHTML = getTimeAsAString(currTime);
-  currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`;
-  console.log('here');
+  timeDisplay.innerHTML = getTimeAsAString(currTime);
+  // currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`;
+  // console.log('here');
+  const listLapDisplay = document.createElement('li');
+
+  const showCurLap = document.createElement('h2');
+  showCurLap.className = "lapNo";
+  showCurLap.appendChild(document.createTextNode(`Lap ${nextId}`));
+
+  const showCurTime = document.createElement('h2');
+  showCurTime.className = "lapStopTime";
+  showCurTime.appendChild(document.createTextNode(`${getTimeAsAString(currLapTime)}`));
+
+  listLapDisplay.appendChild(showCurLap);
+  listLapDisplay.appendChild(showCurTime);
+
+  currentLapDisplay.innerHTML = '';
+  currentLapDisplay.appendChild(listLapDisplay);
 }
 
 var show = function (elem) {
-  elem.style.display = 'block';
+  elem.style.display = 'inline-flex';
 }
 
 var hide = function (elem) {
@@ -102,7 +117,7 @@ var hide = function (elem) {
 
 var toggle = function (elem) {
 
-  if(window.getComputedStyle(elem).display === 'block') {
+  if(window.getComputedStyle(elem).display === 'inline-flex') {
     hide(elem);
     return
   }
