@@ -27,7 +27,7 @@ function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
     const slowest = id === slowestLapTimeId;
     const fastest = id === fastestLapTimeId;
     return createLapNode(lap, fastest, slowest);
-  });
+  }).reverse();
   laps.forEach(lap => {
     lapDisplay.appendChild(lap);
   })
