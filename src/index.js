@@ -2,7 +2,7 @@ import './styles.css';
 import { initialState } from './Constants/initialState';
 import { startTimer, getCurrentTime, stopTimer, resetTimer, lapTimer } from './Actions/actions';
 import { timer } from './Reducer/timerReducer';
-import { getTimeAsAString } from './helperFunctions';
+import { getTimeAsAString, createLapNode } from './helperFunctions';
 
 // DECLARE STATE AND ASSIGN IT TO THE VALUE OF THE INITIAL STATE
 let state = initialState, tInterval;
@@ -19,40 +19,17 @@ let currentTimeDisplay = document.querySelector('.timeDisplay');
 let currentLapDisplay = document.querySelector('.currentLapContainer');
 let lapDisplay = document.querySelector('.lapsContainer');
 
-// TODO: create a helper function that creates lap nodes
-// helper function will accept three arguments, one required arg and two optional.
-// (lapObj, boolFastest = false, boolSlowest = false)
+
 function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
-  let arrLapsStr = laps.map(obj => {
-    const { id, lapTime } = obj;
-    let newLapNode = document.createElement('li');
-    // const newLap = document.createTextNode(`Lap ${id}`);
-    const newLap = document.createElement('h2');
-    newLap.className = "lapNo";
-    newLap.appendChild(document.createTextNode(`Lap ${id}`));
-    const newLapTime = document.createElement('h2');
-    newLapTime.className = "lapStopTime"
-    newLapTime.appendChild(document.createTextNode(`${getTimeAsAString(lapTime)}`));
-
-    if(id === slowestLapTimeId && laps.length > 1) {
-      newLapNode.style.color = 'red';
-    }
-
-    if(id === fastestLapTimeId && laps.length > 1) {
-      newLapNode.style.color = 'green';
-    }
-
-    newLapNode.append(newLap);
-    newLapNode.append(newLapTime);
-   //const newLapNode = `Lap ${id} : ${getTimeAsAString(lapTime)}`;
-    return newLapNode;
-  })
-  arrLapsStr = arrLapsStr.reverse();
-  console.log(arrLapsStr);
-  var container = document.querySelector('.lapsContainer');
-  container.innerHTML = '';
-  arrLapsStr.forEach(t => {
-    container.appendChild(t);
+  lapDisplay.innerHTML = '';
+  laps = laps.map(lap => {
+    const { id } = lap;
+    const slowest = id === slowestLapTimeId;
+    const fastest = id === fastestLapTimeId;
+    return createLapNode(lap, fastest, slowest);
+  });
+  laps.forEach(lap => {
+    lapDisplay.appendChild(lap);
   })
 }
 

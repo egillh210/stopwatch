@@ -12,7 +12,28 @@ export const getTimeAsAString = (time) => {
   seconds = (seconds < 10) ? '0' + seconds : seconds;
   milliseconds = (milliseconds < 10) ? '0' + milliseconds : milliseconds;
 
-  if (!time) return '00 : 00 : 00';
-
   return `${Number(hours) < 1 ? '' : hours + ':'} ${minutes}:${seconds}.${milliseconds}`;
+}
+
+export const createLapNode = (lapObj, boolFastest = false, boolSlowest = false) => {
+  const { id, lapTime } = lapObj;
+
+  let newLapNode = document.createElement('li');
+  
+  const newLap = document.createElement('h2');
+  newLap.className = "lapNo";
+  newLap.appendChild(document.createTextNode(`Lap ${id}`));
+
+  const newLapTime = document.createElement('h2');
+  newLapTime.className = "lapStopTime";
+  newLapTime.appendChild(document.createTextNode(`${getTimeAsAString(lapTime)}`));
+
+  if (boolFastest || boolSlowest) {
+    newLapNode.style.color = boolFastest ? 'green' : 'red';
+  };
+
+  newLapNode.append(newLap);
+  newLapNode.append(newLapTime);
+
+  return newLapNode;
 }
