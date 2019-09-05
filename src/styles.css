@@ -4,6 +4,12 @@
   font-weight: 600;
   font-style: 'normal';
 }
+@font-face {
+  font-family: 'lapfont';
+  src: url('./HelveticaNeue-Roman.otf') format('opentype');
+  font-weight: 100;
+  font-style: 'normal';
+}
 
 body {
   background-color: black;
@@ -29,6 +35,7 @@ body {
   height: 16vw;
   width: 16vw;
   font-size: 5vw;
+  font-family: 'lapfont', Arial, Helvetica, sans-serif;
   border-radius: 50%;
   border: solid 2px black;
   display: inline-flex;
@@ -85,6 +92,7 @@ width:100%
 
 .lapsContainer, .currentLapContainer {
   font-size: 6vw;
+  font-family: 'lapfont', Arial, Helvetica, sans-serif;
   color: white;
   list-style:none;
   text-align: center;
@@ -94,7 +102,8 @@ width:100%
   flex-direction: column;
 }
 h2{
-  font-size: 15px;
+  font-size: 3.5vw;
+  font-weight: lighter;
 }
 .currentLapContainer ul {
   margin-block-end: 0%
