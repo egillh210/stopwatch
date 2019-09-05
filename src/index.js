@@ -17,7 +17,8 @@ const lapBtn = document.querySelector('.lap');
 // Declare and assign re-assignable variables for elements to be rendered.
 let currentTimeDisplay = document.querySelector('.timeDisplay');
 let currentLapDisplay = document.querySelector('.currentLapContainer');
-let lapDisplay = document.querySelector('.lapsContainer');
+//let lapDisplay = document.querySelector('.lapsContainer');
+let lapDisplay = document.querySelector('#lapsCont')
 
 
 function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
@@ -27,10 +28,23 @@ function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
     const slowest = id === slowestLapTimeId;
     const fastest = id === fastestLapTimeId;
     return createLapNode(lap, fastest, slowest);
-  });
+  }).reverse();
+
   laps.forEach(lap => {
     lapDisplay.appendChild(lap);
   })
+}
+
+function getTime() {
+  const timeStamp = Date.now();
+  const { startTime, currentTime, previousLapTime, nextId } = state;
+  const currTime = startTime ? (timeStamp - startTime) : currentTime;
+  const currLapTime = currTime - previousLapTime;
+  const currentLap = createLapNode(({ id: nextId, lapTime: currLapTime }))
+
+  currentLapDisplay.innerHTML = '';
+  currentLapDisplay.appendChild(currentLap);
+  currentTimeDisplay.innerHTML = getTimeAsAString(currTime);
 }
 
 function renderState ({ laps, currentTime, running }) {
@@ -60,19 +74,6 @@ function renderState ({ laps, currentTime, running }) {
     lapBtn.classList.toggle("runningLap")
   }
 
-}
-
-function getTime() {
-  const timeStamp = Date.now();
-  const { startTime, currentTime, previousLapTime, nextId } = state;
-  const currTime = startTime ? (timeStamp - startTime) : currentTime;
-  const currLapTime = currTime - previousLapTime;
-
-  const currentLap = createLapNode(({ id: nextId, lapTime: currLapTime }))
-
-  currentLapDisplay.innerHTML = '';
-  currentLapDisplay.appendChild(currentLap);
-  currentTimeDisplay.innerHTML = getTimeAsAString(currTime);
 }
 
 var show = function (elem) {
