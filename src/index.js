@@ -80,6 +80,7 @@ function renderState ({ laps, currentTime, running }) {
     currentTimeDisplay.innerHTML = '00:00.00';
     hide(resetBtn);
     show(lapBtn);
+    lapBtn.classList.toggle("runningLap")
   }
 
 }
