@@ -15,6 +15,8 @@ export const getTimeAsAString = (time) => {
   return `${Number(hours) < 1 ? '' : hours + ':'} ${minutes}:${seconds}.${milliseconds}`;
 }
 
+// Helper function to create lapNodes and assigning them a color based on 
+// the optional 2nd and 3rd arguments.
 export const createLapNode = (lapObj, boolFastest = false, boolSlowest = false) => {
   const { id, lapTime } = lapObj;
 
@@ -28,7 +30,7 @@ export const createLapNode = (lapObj, boolFastest = false, boolSlowest = false) 
   newLapTime.className = "lapStopTime";
   newLapTime.appendChild(document.createTextNode(`${getTimeAsAString(lapTime)}`));
 
-  if (boolFastest || boolSlowest) {
+  if ((boolFastest || boolSlowest) && boolFastest !== boolSlowest) {
     newLapNode.style.color = boolFastest ? 'green' : 'red';
   };
 

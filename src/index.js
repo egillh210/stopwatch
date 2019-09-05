@@ -21,19 +21,32 @@ let currentLapDisplay = document.querySelector('.currentLapContainer');
 let lapDisplay = document.querySelector('#lapsCont')
 
 
+// Define show and hide functions to toggle display property of buttons
+const show = function (elem) {
+  elem.style.display = 'inline-flex';
+}
+const hide = function (elem) {
+  elem.style.display = 'none';
+}
+
+// Use helper function to create lap nodes from the array of lap objects
+// and use the return values to manipulate the DOM
 function showLaps ({ laps, slowestLapTimeId, fastestLapTimeId }) {
   lapDisplay.innerHTML = '';
   laps = laps.map(lap => {
     const { id } = lap;
-    const slowest = id === slowestLapTimeId;
-    const fastest = id === fastestLapTimeId;
-    return createLapNode(lap, fastest, slowest);
+    return createLapNode(lap, fastestLapTimeId === id, slowestLapTimeId === id);
   }).reverse();
   laps.forEach(lap => {
     lapDisplay.appendChild(lap);
   })
 }
 
+// Calculate current time and current lap time by comparing Date.now() to
+// the startTime timestamp in state. Then update the DOM with the calculated 
+// current times. This function only "consumes" the state and does not alter 
+// it at all. Function is called recursively by the setInterval function 
+// assigned to the tInterval variable. 
 function getTime() {
   const timeStamp = Date.now();
   const { startTime, currentTime, previousLapTime, nextId } = state;
@@ -46,6 +59,10 @@ function getTime() {
   currentTimeDisplay.innerHTML = getTimeAsAString(currTime);
 }
 
+// Rendering funtion that handles the conditional rendering logic such as
+// showing/hiding buttons, resetting DOM elements to their empty/initial value
+// state. The function is called after each click event, after the reducer has 
+// fired and the new state has been assigned.
 function renderState ({ laps, currentTime, running }) {
 
   if(laps.length > 0) showLaps(state)
@@ -75,31 +92,20 @@ function renderState ({ laps, currentTime, running }) {
 
 }
 
-var show = function (elem) {
-  elem.style.display = 'inline-flex';
-}
-
-var hide = function (elem) {
-  elem.style.display = 'none';
-}
-
-var toggle = function (elem) {
-
-  if(window.getComputedStyle(elem).display === 'inline-flex') {
-    hide(elem);
-    return
-  }
-
-  show(elem);
-
-}
-
+// This event listener listens for any click event that fires within the 
+// time container div. Any click event that fires in a child element of the
+// container will first execute this function before traveling down to the 
+// child element's event handler (set useCapture to true). This is to avoid
+// repeating logic in reducer that relies on the currentTime and currentLapTime.
 document.querySelector('.timerContainer').addEventListener('click', e => {
   let time = Date.now();
   state = timer(state, getCurrentTime(time));
   console.log('here', state);
 },true);
 
+
+// Event listener that listens for a click event and fires the reducer.
+// the new state returned from the reducer is then assigned to the state variable.
 document.addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -108,24 +114,20 @@ document.addEventListener('click', function (event) {
     state = timer(state, startTimer(time))
     renderState(state);
     tInterval = setInterval(getTime, 10);
-    console.log(state);
   }
-  if(event.target.matches('.stopTimer')) {
+  else if(event.target.matches('.stopTimer')) {
     let time = Date.now();
     clearInterval(tInterval);
     state = timer(state, stopTimer(time))
     renderState(state);
-    console.log(state);
   }
-  if(event.target.matches('.resetTimer')) {
+  else if(event.target.matches('.resetTimer')) {
     state = timer(state, resetTimer());
     renderState(state);
-    console.log(state);
   }
-  if(event.target.matches('.lap')) {
+  else if(event.target.matches('.lap')) {
     state = timer(state, lapTimer());
-    showLaps(state);
-    console.log(state);
+    renderState(state)
   }
 });
 

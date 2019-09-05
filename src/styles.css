@@ -1,12 +1,12 @@
 @font-face {
   font-family: 'timefont';
-  src: url('./HelveticaNeue-UltraLight.otf') format('opentype');
+  src: url('./Fonts/HelveticaNeue-UltraLight.otf') format('opentype');
   font-weight: 600;
   font-style: 'normal';
 }
 @font-face {
   font-family: 'lapfont';
-  src: url('./HelveticaNeue-Roman.otf') format('opentype');
+  src: url('./Fonts/HelveticaNeue-Roman.otf') format('opentype');
   font-weight: 100;
   font-style: 'normal';
 }
