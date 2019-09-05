@@ -61,11 +61,6 @@ function renderState ({ laps, currentTime, running }) {
   if(laps.length > 0) showLaps(state)
   else lapDisplay.innerHTML = '';
 
-  if (currentTime === 0) {
-    currentLapDisplay.innerHTML = '';
-    currentTimeDisplay.innerHTML = '00 : 00 : 00';
-  }
-
   if (running) {
     hide(startBtn);
     hide(resetBtn);
@@ -80,6 +75,13 @@ function renderState ({ laps, currentTime, running }) {
     hide(lapBtn);
   }
 
+  if (currentTime === 0) {
+    currentLapDisplay.innerHTML = '';
+    currentTimeDisplay.innerHTML = '00:00.00';
+    hide(resetBtn);
+    show(lapBtn);
+  }
+
 }
 
 function getTime() {
@@ -88,8 +90,6 @@ function getTime() {
   const currTime = startTime ? (timeStamp - startTime) : currentTime;
   const currLapTime = currTime - previousLapTime;
   currentTimeDisplay.innerHTML = getTimeAsAString(currTime);
-  // currentLapDisplay.innerHTML = `Lap ${nextId} - ${getTimeAsAString(currLapTime)}`;
-  // console.log('here');
   const listLapDisplay = document.createElement('li');
 
   const showCurLap = document.createElement('h2');
