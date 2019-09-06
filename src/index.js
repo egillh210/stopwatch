@@ -1,6 +1,4 @@
 
-// DECLARE STATE AND ASSIGN IT TO THE VALUE OF THE INITIAL STATE
-
 // Declare constants for buttons and assign them a reference to their
 // respective properties of the document object.
 const startBtn = document.querySelector('.startTimer');
@@ -41,6 +39,7 @@ const initialState = {
   laps: [],
 }
 
+// DECLARE STATE AND ASSIGN IT TO THE VALUE OF THE INITIAL STATE
 let state = initialState, tInterval;
 
 // ACTIONS
@@ -255,14 +254,12 @@ function renderState ({ laps, currentTime, running }) {
 }
 
 // This event listener listens for any click event that fires within the 
-// time container div. Any click event that fires in a child element of the
-// container will first execute this function before traveling down to the 
+// time container div, which will first execute this function before traveling down to the 
 // child element's event handler (set useCapture to true). This is to avoid
 // repeating logic in reducer that relies on the currentTime and currentLapTime.
 document.querySelector('.timerContainer').addEventListener('click', e => {
   let time = Date.now();
   state = timer(state, getCurrentTime(time));
-  console.log('here', state);
 },true);
 
 
