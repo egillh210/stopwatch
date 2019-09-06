@@ -1,31 +1,30 @@
+
 @font-face {
-  font-family: 'timefont';
-  src: url('./Fonts/HelveticaNeue-UltraLight.otf') format('opentype');
+  font-family: "Helvetica Neue";
+  src: url(./Fonts/HelveticaNeue-UltraLight.otf) format('opentype');
   font-weight: 600;
   font-style: 'normal';
 }
+
 @font-face {
-  font-family: 'lapfont';
-  src: url('./Fonts/HelveticaNeue-Roman.otf') format('opentype');
-  font-weight: 100;
-  font-style: 'normal';
+  font-family: "Helvetica Neue Roman";
+  src: url(./Fonts/HelveticaNeue-Roman.otf) format('opentype');
 }
 
 body {
   background-color: black;
 }
-
 .timerContainer {
   color: white;
   height: 70vh;
   width: vw;
-  font-family: 'timefont', Arial, Helvetica, sans-serif;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
 .timeDisplay {
-  height: 50vw;
   font-size: 22vw;
-  margin-top: 100px;
+  margin-top: 15vh;
+  margin-bottom: 15vh;
   text-align: center;
   font-style: 'bold';
   position: static;
@@ -36,7 +35,7 @@ body {
   height: 16vw;
   width: 16vw;
   font-size: 5vw;
-  font-family: 'lapfont', Arial, Helvetica, sans-serif;
+  font-family: 'Helvetica Neue Roman', Arial, Helvetica, sans-serif;
   border-radius: 50%;
   border: solid 2px black;
   display: inline-flex;
