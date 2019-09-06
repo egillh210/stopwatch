@@ -5,8 +5,10 @@
   font-weight: 600;
   font-style: 'normal';
 }
-.timerContainer {
+body {
   background-color: black;
+}
+.timerContainer {
   color: white;
   height: 70vh;
   width: vw;
@@ -14,9 +16,9 @@
 }
 
 .timeDisplay {
-  height: 50vw;
   font-size: 22vw;
-  margin-top: 100px;
+  margin-top: 15vh;
+  margin-bottom: 15vh;
   text-align: center;
   font-style: 'bold';
   position: static;
