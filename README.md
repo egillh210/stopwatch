@@ -8,5 +8,5 @@ How to run:
 
 #### 
 Clone this repo.
-Open ~/dist/index.html in browser
+Open ~/src/index.html in browser
 ####
