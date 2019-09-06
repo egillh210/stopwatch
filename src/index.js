@@ -1,6 +1,4 @@
 
-// DECLARE STATE AND ASSIGN IT TO THE VALUE OF THE INITIAL STATE
-
 // Declare constants for buttons and assign them a reference to their
 // respective properties of the document object.
 const startBtn = document.querySelector('.startTimer');
@@ -41,6 +39,7 @@ const initialState = {
   laps: [],
 }
 
+// DECLARE STATE AND ASSIGN IT TO THE VALUE OF THE INITIAL STATE
 let state = initialState, tInterval;
 
 // ACTIONS
@@ -78,8 +77,8 @@ const lapTimer = () => ({
 const timer = (state = initialState, action) => {
   switch (action.type) {
     case START_TIMER: {
-      let { time } = action.payload;
-      let { currentTime } = state
+      const { time } = action.payload;
+      const { currentTime } = state
       return ({
         ...state,
         startTime: time - currentTime,
@@ -121,7 +120,7 @@ const timer = (state = initialState, action) => {
         fastestLapTimeId,
         nextId
       } = state;
-      let newLap = {
+      const newLap = {
         id: nextId,
         lapTime: currentLapTime,
       };
@@ -162,7 +161,7 @@ const getTimeAsAString = (time) => {
 const createLapNode = (lapObj, boolFastest = false, boolSlowest = false) => {
   const { id, lapTime } = lapObj;
 
-  let newLapNode = document.createElement('li');
+  const newLapNode = document.createElement('li');
   
   const newLap = document.createElement('h2');
   newLap.className = "lapNo";
@@ -255,14 +254,12 @@ function renderState ({ laps, currentTime, running }) {
 }
 
 // This event listener listens for any click event that fires within the 
-// time container div. Any click event that fires in a child element of the
-// container will first execute this function before traveling down to the 
+// time container div, which will first execute this function before traveling down to the 
 // child element's event handler (set useCapture to true). This is to avoid
 // repeating logic in reducer that relies on the currentTime and currentLapTime.
 document.querySelector('.timerContainer').addEventListener('click', e => {
-  let time = Date.now();
+  const time = Date.now();
   state = timer(state, getCurrentTime(time));
-  console.log('here', state);
 },true);
 
 
@@ -272,13 +269,13 @@ document.addEventListener('click', function (event) {
   event.preventDefault();
 
   if(event.target.matches('.startTimer')) {
-    let time = Date.now();
+    const time = Date.now();
     state = timer(state, startTimer(time))
     renderState(state);
     tInterval = setInterval(getTime, 10);
   }
   else if(event.target.matches('.stopTimer')) {
-    let time = Date.now();
+    const time = Date.now();
     clearInterval(tInterval);
     state = timer(state, stopTimer(time))
     renderState(state);
